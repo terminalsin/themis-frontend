@@ -32,6 +32,16 @@ You can use one of them `npm`, `yarn`, `pnpm`, `bun`, Example using `npm`:
 npm install
 ```
 
+### Environment Setup
+
+Create a `.env.local` file in the root directory and add your Google Gemini API key:
+
+```bash
+GEMINI_API_KEY=your_gemini_api_key_here
+```
+
+You can get your API key from [Google AI Studio](https://aistudio.google.com/app/apikey).
+
 ### Run the development server
 
 ```bash

@@ -1,0 +1,46 @@
+{
+  "id": "b61ec330-c5b0-4f11-9cad-b0a5b6c1c8f0",
+  "step": "completed",
+  "created_at": "2025-09-20T21:30:36.951Z",
+  "updated_at": "2025-09-20T21:54:27.955Z",
+  "video_path": "/Users/terminalsin/Documents/agihouse/themis-frontend/workspace/b61ec330-c5b0-4f11-9cad-b0a5b6c1c8f0/video.mp4",
+  "analysis": {
+    "timeline": [
+      {
+        "timestamp": "00:00",
+        "description": "The self-driving vehicle (red car, dashcam perspective) is traveling in the middle lane of a multi-lane highway. There are multiple vehicles ahead. Weather conditions appear clear with good visibility."
+      },
+      {
+        "timestamp": "00:04",
+        "description": "The silver SUV (other car A) in the rightmost lane begins to drift left without signaling, initiating an unsafe lane change into the middle lane where the dashcam vehicle is located."
+      },
+      {
+        "timestamp": "00:07",
+        "description": "The silver SUV (other car A) completes its unsafe lane change directly into the middle lane, cutting off the dashcam car. A 'Status: COLLISION' alert appears on the dashcam screen, indicating an imminent or actual collision."
+      },
+      {
+        "timestamp": "00:08",
+        "description": "The dashcam car is now closely behind the silver SUV which is fully in the middle lane. The dashcam car's speed has decreased significantly from approximately 68 MPH to 53 MPH, confirming a braking maneuver."
+      },
+      {
+        "timestamp": "00:14",
+        "description": "The dashcam car continues to follow the silver SUV at a reduced speed (approximately 49 MPH). The 'Status: COLLISION' warning remains visible, suggesting the system detected a collision or prolonged dangerous proximity."
+      }
+    ],
+    "parties": [
+      {
+        "party": "self",
+        "at_fault": false
+      },
+      {
+        "party": "other",
+        "at_fault": true
+      }
+    ],
+    "resolution": "other-at-fault",
+    "resolution_details": "The other vehicle, a silver SUV, initiated an unsafe and abrupt lane change from the rightmost lane into the middle lane without proper signaling, directly cutting off the self-driving vehicle. This action forced the self-driving vehicle to brake sharply, resulting in a detected collision by the dashcam system. The other vehicle is solely responsible for the incident due to failure to execute a safe lane change."
+  },
+  "has_case": true,
+  "document_path": "/Users/terminalsin/Documents/agihouse/themis-frontend/workspace/b61ec330-c5b0-4f11-9cad-b0a5b6c1c8f0/case_document.html",
+  "user_photo": "/Users/terminalsin/Documents/agihouse/themis-frontend/workspace/b61ec330-c5b0-4f11-9cad-b0a5b6c1c8f0/user_photo.png"
+}

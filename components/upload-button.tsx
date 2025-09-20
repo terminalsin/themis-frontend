@@ -17,13 +17,21 @@ export const UploadButton: React.FC<UploadButtonProps> = ({
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     const handleButtonClick = () => {
+        console.log('Upload button clicked');
+        console.log('File input ref:', fileInputRef.current);
         fileInputRef.current?.click();
     };
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        console.log('File input changed');
+        console.log('Event target files:', event.target.files);
         const file = event.target.files?.[0];
+        console.log('Selected file:', file);
         if (file && onFileSelect) {
+            console.log('Calling onFileSelect with file:', file.name);
             onFileSelect(file);
+        } else {
+            console.log('No file selected or no onFileSelect callback');
         }
     };
 
