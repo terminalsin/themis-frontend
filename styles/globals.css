@@ -47,4 +47,101 @@
             radial-gradient(circle at 1px 1px, rgba(0, 0, 0, 0.02) 1px, transparent 0);
         background-size: 20px 20px;
     }
+
+    /* Custom blur-in animation */
+    @keyframes blur-in {
+        0% {
+            filter: blur(8px);
+            opacity: 0;
+        }
+
+        100% {
+            filter: blur(0px);
+            opacity: 1;
+        }
+    }
+
+    .blur-in {
+        animation: blur-in 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+
+    /* Handwritten-style letter spacing animation */
+    .hover\:tracking-wide:hover {
+        letter-spacing: 0.1em;
+    }
+
+    /* Elegant progress bars */
+    .elegant-progress {
+        background: #e7e5e4;
+        border-radius: 9999px;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .elegant-progress-bar {
+        background: linear-gradient(90deg, #57534e, #78716c);
+        height: 100%;
+        border-radius: 9999px;
+        transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+    }
+
+    .elegant-progress-bar::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+        animation: shimmer 2s infinite;
+    }
+
+    @keyframes shimmer {
+        0% {
+            transform: translateX(-100%);
+        }
+
+        100% {
+            transform: translateX(100%);
+        }
+    }
+
+    /* Elegant spinner */
+    .elegant-spinner {
+        border: 2px solid #e7e5e4;
+        border-top: 2px solid #57534e;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    /* Elegant card styling */
+    .elegant-card {
+        background: white;
+        border-radius: 1.5rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        border: 1px solid #e5e7eb;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .elegant-card:hover {
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+
+    /* Serif heading styles */
+    .serif-heading {
+        font-family: 'Playfair Display', serif;
+        font-weight: 500;
+        letter-spacing: -0.025em;
+    }
 }

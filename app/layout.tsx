@@ -23,7 +23,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "white" },
-    { media: "(prefers-color-scheme: dark)", color: "black" },
+    { media: "(prefers-color-scheme: dark)", color: "white" },
   ],
 };
 
@@ -42,20 +42,45 @@ export default function RootLayout({
         )}
       >
         <Providers themeProps={{ attribute: "class", defaultTheme: "light" }}>
-          <div className="relative flex flex-col h-screen">
-            <main className="container mx-auto w-full min-h-screen min-w-full flex-grow">
+          <div className="relative flex flex-col min-h-screen">
+            <main className="container mx-auto w-full min-w-full flex-grow">
               {children}
             </main>
-            <footer className="w-full flex items-center justify-center py-3">
-              <Link
-                isExternal
-                className="flex items-center gap-1 text-current"
-                href="https://heroui.com?utm_source=next-app-template"
-                title="heroui.com homepage"
-              >
-                <span className="text-default-600">Powered by</span>
-                <p className="text-primary">Love</p>
-              </Link>
+            <footer className="w-full flex items-center justify-center py-8 paper-texture">
+              <div className="text-center animate-in fade-in-50 slide-in-from-bottom-4 duration-1000 delay-300">
+                <div className="serif-display italic text-stone-600 text-sm tracking-wide mb-2 animate-in fade-in-0 blur-in duration-700 delay-500">
+                  <span className="opacity-70">Crafted with</span>
+                  <span className="text-stone-800 mx-1 animate-pulse">♡</span>
+                  <span className="opacity-70">& passion</span>
+                </div>
+                <div className="serif-body italic text-xs text-stone-500 tracking-wider animate-in fade-in-0 blur-in duration-700 delay-700">
+                  <span className="opacity-60">powered by</span>
+                  <span className="mx-2 opacity-40">·</span>
+                  <Link
+                    isExternal
+                    href="https://www.ai21.com"
+                    className="hover:text-stone-700 transition-all duration-300 hover:tracking-wide opacity-70 hover:opacity-100"
+                  >
+                    AI21
+                  </Link>
+                  <span className="mx-2 opacity-40">·</span>
+                  <Link
+                    isExternal
+                    href="https://gemini.google.com"
+                    className="hover:text-stone-700 transition-all duration-300 hover:tracking-wide opacity-70 hover:opacity-100"
+                  >
+                    Gemini
+                  </Link>
+                  <span className="mx-2 opacity-40">·</span>
+                  <Link
+                    isExternal
+                    href="https://brightdata.com"
+                    className="hover:text-stone-700 transition-all duration-300 hover:tracking-wide opacity-70 hover:opacity-100"
+                  >
+                    BrightData
+                  </Link>
+                </div>
+              </div>
             </footer>
           </div>
         </Providers>

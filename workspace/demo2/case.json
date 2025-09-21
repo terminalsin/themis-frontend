@@ -1,0 +1,86 @@
+{
+  "id": "demo2",
+  "step": "completed",
+  "created_at": "2024-01-20T14:15:00.000Z",
+  "updated_at": "2025-09-21T00:42:02.034Z",
+  "processing_completed_at": "2024-01-20T14:25:00.000Z",
+  "video_path": "/Users/terminalsin/Documents/agihouse/themis-frontend/workspace/demo2/video.MOV",
+  "web_video_path": "/Users/terminalsin/Documents/agihouse/themis-frontend/workspace/demo2/video_web.mp4",
+  "processed_video_path": "/Users/terminalsin/Documents/agihouse/themis-frontend/workspace/demo2/processed_video_web.mp4",
+  "processed_web_video_path": "/Users/terminalsin/Documents/agihouse/themis-frontend/workspace/demo2/processed_video_web_web.mp4",
+  "user_photo": "/Users/terminalsin/Documents/agihouse/themis-frontend/workspace/demo2/user_photo.png",
+  "document_path": "/Users/terminalsin/Documents/agihouse/themis-frontend/workspace/demo2/case_document.html",
+  "meme_path": "/Users/terminalsin/Documents/agihouse/themis-frontend/workspace/demo2/celebration_meme.svg",
+  "has_case": false,
+  "analysis": {
+    "parties": [
+      {
+        "at_fault": true,
+        "party": "self"
+      },
+      {
+        "at_fault": false,
+        "party": "other"
+      }
+    ],
+    "resolution": "self-at-fault",
+    "resolution_details": "The male participant (referred to as 'self') actively engaged in a mock light saber duel, making offensive and defensive moves that ultimately led to his theatrical fall and defeat as part of the game. The detected collision at the end of the video is primarily a result of the 'self' party's staged defeat and subsequent position on the ground. The 'other' party's actions were consistent with the duel and did not cause an unintentional or injurious accident to the 'self' party, who chose to perform the fall as part of the play.",
+    "timeline": [
+      {
+        "description": "Two individuals, a man on the left and a woman on the right, stand facing each other, both holding a light saber. They are positioned several feet apart, in a ready stance, with their light sabers held at waist level.",
+        "timestamp": "00:00"
+      },
+      {
+        "description": "Both individuals maintain their positions, with minor shifts in posture, still holding their light sabers. No significant movement or interaction occurs.",
+        "timestamp": "00:01"
+      },
+      {
+        "description": "The man and woman begin to swing their light sabers towards each other, engaging in a mock duel. Their weapons are raised and moving towards the center point between them.",
+        "timestamp": "00:02"
+      },
+      {
+        "description": "The light sabers of both individuals clash together in the space between them. The bounding box around the woman turns red, indicating a \"COLLISION\" status (ID: 47).",
+        "timestamp": "00:03"
+      },
+      {
+        "description": "The light sabers remain engaged, pressing against each other. The woman's bounding box continues to show \"COLLISION\" status.",
+        "timestamp": "00:04"
+      },
+      {
+        "description": "The man pushes his light saber forward, while the woman's light saber is pushed slightly back, maintaining the clash. The woman's bounding box is still red, indicating an ongoing \"COLLISION\" status.",
+        "timestamp": "00:05"
+      },
+      {
+        "description": "The man performs an upward swinging motion with his light saber, while the woman moves to block his attack defensively. The bounding box around the man is cyan (OK), while the woman's is red (COLLISION).",
+        "timestamp": "00:06"
+      },
+      {
+        "description": "The man is in a low, lunging stance, having swung his light saber past the woman's defense. The woman's light saber is pushed down. The bounding box around the woman remains red with \"COLLISION\" status.",
+        "timestamp": "00:07"
+      },
+      {
+        "description": "The man is now seen in a sitting position on the floor, holding his light saber, appearing to have been defeated. The woman stands over him, holding her light saber pointed downwards. The woman's bounding box is still red, indicating an ongoing \"COLLISION\" status, likely due to interaction or proximity.",
+        "timestamp": "00:08"
+      },
+      {
+        "description": "The man is lying completely on his back on the floor, still holding his light saber. The woman is standing upright, her light saber pointed towards him. Both individuals' bounding boxes are now red, indicating \"COLLISION\" status for both (IDs: 2 and 47). This appears to be a staged defeat within the mock duel.",
+        "timestamp": "00:09"
+      },
+      {
+        "description": "The man remains on the floor. The woman raises both arms above her head in a triumphant gesture, smiling, her light saber still in her right hand. Her bounding box is still red (COLLISION).",
+        "timestamp": "00:10"
+      },
+      {
+        "description": "The man is still on the floor, looking up at the woman. The woman continues to stand triumphantly, smiling broadly, with her light saber raised. Her bounding box is red (COLLISION), signifying the conclusion of the staged interaction.",
+        "timestamp": "00:11"
+      }
+    ]
+  },
+  "processing_summary": {
+    "total_collision_events": 1,
+    "processing_time_seconds": 38.7,
+    "confidence_score": 0.88
+  },
+  "gemini_meme_response": "🚗😅 When you're tailgating like you're in a NASCAR race but it's actually rush hour traffic! This ID photo person vs. the 'I-brake-for-no-one' mentality! Perfect meme: 'Me thinking I can stop on a dime... Physics: Hold my beer!' 🏁💸 #TailgatingFail #PhysicsWins",
+  "temporal_output_path": "/tmp/demo2_processed.MOV"
+}

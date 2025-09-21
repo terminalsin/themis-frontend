@@ -1,0 +1,71 @@
+{
+  "id": "demo1",
+  "step": "completed",
+  "created_at": "2024-01-15T10:30:00.000Z",
+  "updated_at": "2025-09-21T00:44:11.221Z",
+  "processing_completed_at": "2024-01-15T10:40:00.000Z",
+  "video_path": "/Users/terminalsin/Documents/agihouse/themis-frontend/workspace/demo1/video.MOV",
+  "web_video_path": "/Users/terminalsin/Documents/agihouse/themis-frontend/workspace/demo1/video_web.mp4",
+  "processed_video_path": "/Users/terminalsin/Documents/agihouse/themis-frontend/workspace/demo1/processed_video.MOV",
+  "processed_web_video_path": "/Users/terminalsin/Documents/agihouse/themis-frontend/workspace/demo1/processed_video_web.mp4",
+  "user_photo": "/Users/terminalsin/Documents/agihouse/themis-frontend/workspace/demo1/user_photo.png",
+  "document_path": "/Users/terminalsin/Documents/agihouse/themis-frontend/workspace/demo1/case_document.html",
+  "meme_path": "/Users/terminalsin/Documents/agihouse/themis-frontend/workspace/demo1/celebration_meme.svg",
+  "has_case": true,
+  "analysis": {
+    "parties": [
+      {
+        "at_fault": false,
+        "party": "self"
+      },
+      {
+        "at_fault": true,
+        "party": "other"
+      }
+    ],
+    "resolution": "other-at-fault",
+    "resolution_details": "The 'other' vehicle (silver/gray SUV, Id: 11) is at fault for making an unsafe and abrupt lane change into the left lane, directly in the path of the 'self' vehicle, which was traveling straight in its lane. This action forced the 'self' vehicle to take evasive braking action to avoid a direct collision.",
+    "timeline": [
+      {
+        "description": "The dashcam vehicle, a red car, is traveling in the left lane of a multi-lane highway. There is light snow on the road shoulders and trees line the highway. Several vehicles are visible ahead in both lanes. The dashcam vehicle's speed is approximately 69 MPH.",
+        "timestamp": "00:00"
+      },
+      {
+        "description": "A silver/gray SUV, identified as Id: 11, is traveling in the right lane, slightly ahead and to the right of the dashcam vehicle. Another silver SUV, Id: 10, is also in the right lane further ahead. The dashcam car continues at approximately 67 MPH.",
+        "timestamp": "00:04"
+      },
+      {
+        "description": "The silver/gray SUV (Id: 11) in the right lane begins to drift or signal a lane change towards the left lane, moving closer to the dashcam vehicle's path.",
+        "timestamp": "00:05"
+      },
+      {
+        "description": "The silver/gray SUV (Id: 11) continues its lane change maneuver, encroaching further into the left lane. The dashcam vehicle maintains its course, traveling at 67 MPH.",
+        "timestamp": "00:06"
+      },
+      {
+        "description": "The silver/gray SUV (Id: 11) abruptly cuts into the left lane, directly in front of the dashcam vehicle, without sufficient clearance. A 'Status: COLLISION' warning appears for both the dashcam vehicle and the silver/gray SUV, highlighted by red bounding boxes and projected collision paths. The dashcam vehicle immediately begins to slow down from 68 MPH.",
+        "timestamp": "00:07"
+      },
+      {
+        "description": "The silver/gray SUV is now fully in the left lane, directly in front of the dashcam vehicle. Its license plate 'MEISNR' is clearly visible. The dashcam vehicle continues to brake, with its speed dropping to 67 MPH, attempting to avoid or mitigate a direct impact. The collision warning persists.",
+        "timestamp": "00:08"
+      },
+      {
+        "description": "The silver/gray SUV continues to drive in the left lane. The dashcam vehicle is now maintaining a safe following distance after the sudden lane change and braking, with its speed reduced to 53 MPH. The collision warning remains active as a precautionary measure due to the close encounter.",
+        "timestamp": "00:09"
+      },
+      {
+        "description": "The silver/gray SUV is now further ahead in the left lane, and the dashcam vehicle continues at a reduced speed of 49 MPH, having successfully avoided a direct collision but experiencing a near-miss due to the other vehicle's unsafe lane change.",
+        "timestamp": "00:14"
+      }
+    ]
+  },
+  "processing_summary": {
+    "total_collision_events": 1,
+    "processing_time_seconds": 45.2,
+    "confidence_score": 0.95
+  },
+  "gemini_meme_response": "🚗💥 When you have the right of way but the other driver thinks traffic lights are just suggestions! This ID photo person vs. the 'I-don't-stop-for-red-lights' maniac! Perfect case for: 'Your Honor, I present Exhibit A - the defendant who thinks traffic laws are optional!' 😂⚖️",
+  "temporal_output_path": "/tmp/demo1_processed.MOV",
+  "other_party_photo": "/Users/terminalsin/Documents/agihouse/themis-frontend/workspace/demo1/other_photo.png"
+}

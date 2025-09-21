@@ -3,8 +3,8 @@
 /**
  * One-click CLI runner for vehicle tracking with Temporal.
  * 
- * This script provides a command-line interface for running video tracking workflows
- * that delegate to Python workers via Temporal.
+ * This script provides a command-line interface for running Python video tracking workflows
+ * directly via Temporal.
  */
 
 import { promises as fs } from 'fs';
@@ -165,8 +165,11 @@ async function main(): Promise<void> {
         console.log(`📹 Input: ${request.input_video}`);
         console.log(`💾 Output: ${request.output_video}`);
         console.log(`🤖 Model: ${request.model_path}`);
+        console.log(`🔧 Confidence: ${request.confidence_threshold}`);
+        console.log(`📏 Collision Distance: ${request.collision_distance_threshold}`);
+        console.log(`📐 Overlap: ${request.overlap_threshold}`);
 
-        // Run the workflow (delegates to Python worker)
+        // Run the Python workflow directly
         const result = await runVideoTrackingWorkflow(request, options.server);
 
         if (result.success) {

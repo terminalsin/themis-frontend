@@ -47,10 +47,7 @@ export type VideoProcessingResult = z.infer<typeof VideoProcessingResultSchema>;
 export type ValidationResult = z.infer<typeof ValidationResultSchema>;
 export type ProcessingSummary = z.infer<typeof ProcessingSummarySchema>;
 
-// Activity function signatures - simplified for Python worker calls
-export interface VideoTrackingActivities {
-    executeVideoTrackingActivity: (request: VideoProcessingRequest) => Promise<VideoProcessingResult>;
-}
+// Note: No TypeScript activities needed - we call Python workflows directly
 
 // Workflow execution options
 export interface WorkflowExecutionOptions {

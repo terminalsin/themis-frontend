@@ -38,6 +38,16 @@ export async function POST(
 
         await fs.writeFile(memePath, memeContent);
 
+        // Also create victory memes in victory directory
+        const victoryDir = path.join(caseDir, 'victory');
+        await fs.mkdir(victoryDir, { recursive: true });
+
+        // Create a simple victory meme PNG (placeholder - in real implementation this would be generated)
+        // For now, we'll create a text-based SVG and save it as PNG-named file
+        const victoryMemeContent = generateVictoryMeme(caseData, memeResponse);
+        const victoryMemePath = path.join(victoryDir, `victory_${Date.now()}.svg`);
+        await fs.writeFile(victoryMemePath, victoryMemeContent);
+
         // Update case with meme path and Gemini response
         caseData.meme_path = memePath;
         caseData.gemini_meme_response = memeResponse;
@@ -257,4 +267,27 @@ function generateMemeFromGeminiResponse(caseData: any, geminiResponse: string): 
 </svg>`;
 
   return svgContent;
+}
+
+function generateVictoryMeme(caseData: any, geminiResponse: string): string {
+  const hasCase = caseData.has_case;
+  const title = hasCase ? '🏆 VICTORY!' : '💪 CONSOLATION';
+  const backgroundColor = hasCase ? '#2d3748' : '#4a5568';
+
+  return `
+<svg width="400" height="300" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="300" fill="${backgroundColor}"/>
+  <text x="200" y="50" text-anchor="middle" font-family="Georgia, serif" font-size="24" font-weight="bold" fill="white">
+    ${title}
+  </text>
+  <text x="200" y="80" text-anchor="middle" font-family="Georgia, serif" font-size="12" fill="white">
+    ${hasCase ? 'Legal Case Victory' : 'Consolation Prize'}
+  </text>
+  <text x="200" y="150" text-anchor="middle" font-family="Georgia, serif" font-size="14" fill="white">
+    ${hasCase ? 'Justice Served' : 'Better Luck Next Time'}
+  </text>
+  <text x="200" y="250" text-anchor="middle" font-family="Georgia, serif" font-size="10" fill="white">
+    Themis AI Legal Analysis
+  </text>
+</svg>`;
 }

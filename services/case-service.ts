@@ -109,6 +109,16 @@ export class CaseService {
         }
     }
 
+    static async getMemes(caseId: string): Promise<{ memes: Array<{ filename: string; url: string }>; count: number }> {
+        const response = await fetch(`${CaseService.baseUrl}/${caseId}/memes`);
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch memes');
+        }
+
+        return response.json();
+    }
+
     static async startProcessing(caseId: string): Promise<void> {
         const response = await fetch(`${CaseService.baseUrl}/${caseId}/process`, {
             method: 'POST',

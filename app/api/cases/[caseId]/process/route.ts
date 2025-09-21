@@ -67,8 +67,17 @@ async function startTemporalVideoProcessing(
             // Connect to Temporal server
             await client.connect();
 
-            // Create processing request (matches Python worker interface)
+            // Create processing request (matches Python workflow interface)
             const request = createStandardModeRequest(videoPath);
+
+            console.log(`🔧 Processing request details:`, {
+                input_video: request.input_video,
+                output_video: request.output_video,
+                model_path: request.model_path,
+                confidence_threshold: request.confidence_threshold,
+                collision_distance_threshold: request.collision_distance_threshold,
+                overlap_threshold: request.overlap_threshold
+            });
 
             // Execute workflow (delegates to Python worker)
             const result = await client.executeWorkflow(request);
@@ -77,18 +86,62 @@ async function startTemporalVideoProcessing(
             const updatedCaseData = JSON.parse(await fs.readFile(caseFile, 'utf-8'));
 
             if (result.success) {
-                updatedCaseData.step = 'analysis';
-                updatedCaseData.processing_completed_at = new Date().toISOString();
-                updatedCaseData.processed_video_path = result.output_file;
-                updatedCaseData.processing_summary = result.processing_summary;
+                try {
+                    // Copy the processed video from temporal worker output to case workspace
+                    const temporalOutputPath = path.resolve(result.output_file);
+                    const processedVideoName = `processed_${path.basename(updatedCaseData.video_path)}`;
+                    const localProcessedVideoPath = path.join(path.dirname(caseFile), processedVideoName);
 
-                console.log(`✅ Python worker completed video processing for case: ${caseId}`);
-                console.log(`📁 Output video: ${result.output_file}`);
+                    console.log(`📁 Copying processed video from: ${temporalOutputPath}`);
+                    console.log(`📁 To case workspace: ${localProcessedVideoPath}`);
 
-                // Log collision detection results
-                const collisionEvents = (result.processing_summary?.total_collision_events as number) || 0;
-                if (collisionEvents > 0) {
-                    console.log(`⚠️  ${collisionEvents} collision event(s) detected in case: ${caseId}`);
+                    // Verify source file exists before copying
+                    try {
+                        await fs.access(temporalOutputPath);
+                        console.log(`✅ Source file exists: ${temporalOutputPath}`);
+                    } catch (accessError) {
+                        throw new Error(`Source file not found: ${temporalOutputPath}`);
+                    }
+
+                    // Read the entire video file content and write to workspace
+                    console.log(`📖 Reading video file content...`);
+                    const videoBuffer = await fs.readFile(temporalOutputPath);
+                    console.log(`📊 Video file size: ${videoBuffer.length} bytes`);
+
+                    console.log(`💾 Writing video to workspace...`);
+                    await fs.writeFile(localProcessedVideoPath, new Uint8Array(videoBuffer));
+
+                    // Verify the copied file exists and has the same size
+                    const copiedStats = await fs.stat(localProcessedVideoPath);
+                    console.log(`✅ Copied file size: ${copiedStats.size} bytes`);
+
+                    if (copiedStats.size !== videoBuffer.length) {
+                        throw new Error(`File copy incomplete: expected ${videoBuffer.length} bytes, got ${copiedStats.size} bytes`);
+                    }
+
+                    updatedCaseData.step = 'processed';
+                    updatedCaseData.processing_completed_at = new Date().toISOString();
+                    updatedCaseData.processed_video_path = localProcessedVideoPath;
+                    updatedCaseData.processing_summary = result.processing_summary;
+                    updatedCaseData.temporal_output_path = result.output_file; // Keep reference to original
+
+                    console.log(`✅ Python worker completed video processing for case: ${caseId}`);
+                    console.log(`📁 Original output: ${result.output_file}`);
+                    console.log(`📁 Copied to workspace: ${localProcessedVideoPath}`);
+
+                    // Log collision detection results
+                    const collisionEvents = (result.processing_summary?.total_collision_events as number) || 0;
+                    if (collisionEvents > 0) {
+                        console.log(`⚠️  ${collisionEvents} collision event(s) detected in case: ${caseId}`);
+                    }
+                } catch (copyError) {
+                    console.error(`❌ Failed to copy processed video for case: ${caseId}`, copyError);
+                    // Still mark as processed but with error
+                    updatedCaseData.step = 'analysis'; // Fallback to analysis step
+                    updatedCaseData.processing_completed_at = new Date().toISOString();
+                    updatedCaseData.processing_summary = result.processing_summary;
+                    updatedCaseData.processing_error = `Failed to copy processed video: ${copyError instanceof Error ? copyError.message : 'Unknown error'}`;
+                    updatedCaseData.temporal_output_path = result.output_file; // Keep reference
                 }
             } else {
                 updatedCaseData.step = 'upload'; // Revert to upload step on error

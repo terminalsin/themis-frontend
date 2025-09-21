@@ -1,0 +1,21 @@
+<svg width="400" height="300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .meme-text { font-family: Impact, Arial Black, sans-serif; font-weight: bold; text-anchor: middle; }
+      .top-text { font-size: 30px; fill: white; stroke: black; stroke-width: 2; }
+      .bottom-text { font-size: 26px; fill: white; stroke: black; stroke-width: 2; }
+    </style>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="400" height="300" fill="#e74c3c"/>
+  
+  <!-- Shrug emoji -->
+  <text x="200" y="150" font-size="100" text-anchor="middle">🤷</text>
+  
+  <!-- Top text -->
+  <text x="200" y="40" class="meme-text top-text">IT WASN'T MY FAULT</text>
+  
+  <!-- Bottom text -->
+  <text x="200" y="280" class="meme-text bottom-text">BUT I'M STILL CRYING</text>
+</svg>

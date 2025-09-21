@@ -38,6 +38,7 @@ export async function POST(
         await fs.writeFile(caseFile, JSON.stringify(caseData, null, 2));
 
         // Trigger video processing workflow
+        console.log('Triggering video processing workflow for case:', resolvedParams.caseId);
         try {
             const processResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/cases/${resolvedParams.caseId}/process`, {
                 method: 'POST',

@@ -31,6 +31,19 @@ export default function Home() {
   const handleStartCase = async () => {
     if (!selectedFile) return;
 
+    // Check if this is a demo video and redirect accordingly
+    if (selectedFile.name === 'demo1.MOV') {
+      console.log('Demo1 video detected, redirecting to demo1 case');
+      router.push('/case/demo1');
+      return;
+    }
+    
+    if (selectedFile.name === 'demo2.MOV') {
+      console.log('Demo2 video detected, redirecting to demo2 case');
+      router.push('/case/demo2');
+      return;
+    }
+
     try {
       console.log('Creating case...');
       const result = await createCase.mutateAsync();
@@ -84,7 +97,7 @@ export default function Home() {
             <button
               onClick={handleStartCase}
               disabled={createCase.isPending || uploadVideo.isPending || startAnalysis.isPending}
-              className="elegant-button-primary disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+              className="text-black elegant-button-primary disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
             >
               {(createCase.isPending || uploadVideo.isPending || startAnalysis.isPending) ? (
                 <div className="flex items-center space-x-3">
@@ -109,9 +122,6 @@ export default function Home() {
             <div className="w-16 h-px bg-gray-300"></div>
           </div>
 
-          <p className="serif-body text-lg text-gray-600 max-w-2xl leading-relaxed">
-            Upload your accident video and let our AI analyze the situation to determine fault and generate your legal case.
-          </p>
         </div>
         {/* Subtle footer ornament */}
         <div className="mt-8 opacity-30">

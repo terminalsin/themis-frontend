@@ -1,12 +1,12 @@
 /**
- * Temporal client for executing video tracking workflows.
+ * Temporal client for executing Python video tracking workflows.
  * 
  * This client provides a high-level interface for starting and monitoring
- * video tracking workflows that delegate to Python workers.
+ * Python video tracking workflows directly.
  */
 
 import { Connection, Client, WorkflowHandle } from '@temporalio/client';
-import { videoTrackingWorkflow } from '../workflows/video-tracking-workflow';
+import path from 'path';
 import type {
     VideoProcessingRequest,
     VideoProcessingResult,
@@ -65,12 +65,12 @@ export class VideoTrackingClient {
     }
 
     /**
-     * Start a video tracking workflow.
+     * Start a Python video tracking workflow.
      */
     async startWorkflow(
         request: VideoProcessingRequest,
         options?: Partial<WorkflowExecutionOptions>
-    ): Promise<WorkflowHandle<typeof videoTrackingWorkflow>> {
+    ): Promise<WorkflowHandle> {
         if (!this.client) {
             throw new Error('Client not connected. Call connect() first.');
         }
@@ -81,29 +81,29 @@ export class VideoTrackingClient {
             ...options,
         };
 
-        console.log('🚀 Starting video tracking workflow (Python worker)', {
+        console.log('🚀 Starting Python video tracking workflow', {
             workflowId: workflowOptions.workflowId,
             inputVideo: request.input_video,
         });
 
         try {
-            const handle = await this.client.workflow.start(videoTrackingWorkflow, {
+            const handle = await this.client.workflow.start("VideoTrackingWorkflow", {
                 args: [request],
                 taskQueue: workflowOptions.taskQueue,
                 workflowId: workflowOptions.workflowId,
             });
 
-            console.log(`📋 Workflow started with ID: ${handle.workflowId}`);
+            console.log(`📋 Python workflow started with ID: ${handle.workflowId}`);
             return handle;
         } catch (error) {
             const errorMessage = error instanceof Error ? error.message : 'Unknown workflow start error';
-            console.error('❌ Failed to start workflow:', errorMessage);
-            throw new Error(`Workflow start failed: ${errorMessage}`);
+            console.error('❌ Failed to start Python workflow:', errorMessage);
+            throw new Error(`Python workflow start failed: ${errorMessage}`);
         }
     }
 
     /**
-     * Execute a video tracking workflow and wait for completion.
+     * Execute a Python video tracking workflow and wait for completion.
      */
     async executeWorkflow(
         request: VideoProcessingRequest,
@@ -119,21 +119,21 @@ export class VideoTrackingClient {
             ...options,
         };
 
-        console.log('🎯 Executing video tracking workflow (Python worker)', {
+        console.log('🎯 Executing Python video tracking workflow', {
             workflowId: workflowOptions.workflowId,
             inputVideo: request.input_video,
             modelPath: request.model_path,
         });
 
         try {
-            const result = await this.client.workflow.execute(videoTrackingWorkflow, {
+            const result = await this.client.workflow.execute("VideoTrackingWorkflow", {
                 args: [request],
                 taskQueue: workflowOptions.taskQueue,
                 workflowId: workflowOptions.workflowId,
             });
 
             if (result.success) {
-                console.log('✅ Video tracking completed successfully!');
+                console.log('✅ Python video tracking completed successfully!');
                 console.log(`📁 Output saved as: ${result.output_file}`);
 
                 const summary = result.processing_summary;
@@ -144,10 +144,17 @@ export class VideoTrackingClient {
                 console.log(`   Unique Vehicles: ${summary?.unique_vehicles_detected || 'N/A'}`);
                 console.log(`   Collision Events: ${summary?.total_collision_events || 'N/A'}`);
 
-                if (summary?.total_collision_events && summary.total_collision_events > 0) {
+                const collisionEvents = (summary?.total_collision_events as number) || 0;
+                if (collisionEvents > 0) {
                     console.log('⚠️  COLLISIONS DETECTED! Review the output video for details.');
-                    if (summary.collision_details) {
-                        summary.collision_details.forEach((collision, index) => {
+                    const collisionDetails = summary?.collision_details as Array<{
+                        timestamp: string;
+                        vehicles: string[];
+                        severity: 'low' | 'medium' | 'high';
+                        description: string;
+                    }> | undefined;
+                    if (collisionDetails) {
+                        collisionDetails.forEach((collision, index) => {
                             console.log(`   Collision ${index + 1}: ${collision.timestamp} - ${collision.severity} severity`);
                         });
                     }
@@ -155,21 +162,21 @@ export class VideoTrackingClient {
                     console.log('✅ No collisions detected in this video.');
                 }
             } else {
-                console.log(`❌ Video tracking failed: ${result.error_message}`);
+                console.log(`❌ Python video tracking failed: ${result.error_message}`);
             }
 
             return result;
         } catch (error) {
             const errorMessage = error instanceof Error ? error.message : 'Unknown workflow execution error';
-            console.error('❌ Workflow execution failed:', errorMessage);
-            throw new Error(`Workflow execution failed: ${errorMessage}`);
+            console.error('❌ Python workflow execution failed:', errorMessage);
+            throw new Error(`Python workflow execution failed: ${errorMessage}`);
         }
     }
 
     /**
-     * Get a handle to an existing workflow.
+     * Get a handle to an existing Python workflow.
      */
-    async getWorkflowHandle(workflowId: string): Promise<WorkflowHandle<typeof videoTrackingWorkflow>> {
+    async getWorkflowHandle(workflowId: string): Promise<WorkflowHandle> {
         if (!this.client) {
             throw new Error('Client not connected. Call connect() first.');
         }
@@ -213,7 +220,7 @@ export class VideoTrackingClient {
 }
 
 /**
- * Convenience function to run a video tracking workflow with default settings.
+ * Convenience function to run a Python video tracking workflow with default settings.
  */
 export async function runVideoTrackingWorkflow(
     request: VideoProcessingRequest,
@@ -237,9 +244,27 @@ export function createDemoModeRequest(
     inputVideo: string,
     outputVideo?: string
 ): VideoProcessingRequest {
+    // Generate a proper output filename if not provided
+    const defaultOutput = outputVideo || (() => {
+        const inputPath = inputVideo;
+        const lastDot = inputPath.lastIndexOf('.');
+        const lastSlash = Math.max(inputPath.lastIndexOf('/'), inputPath.lastIndexOf('\\'));
+
+        if (lastDot > lastSlash) {
+            // Has extension
+            const stem = inputPath.substring(lastSlash + 1, lastDot);
+            const ext = inputPath.substring(lastDot);
+            return `demo_tracked_${stem}${ext}`;
+        } else {
+            // No extension
+            const stem = inputPath.substring(lastSlash + 1);
+            return `demo_tracked_${stem}.mp4`;
+        }
+    })();
+
     return {
         input_video: inputVideo,
-        output_video: outputVideo || `demo_tracked_${inputVideo}`,
+        output_video: defaultOutput,
         model_path: TEMPORAL_CONSTANTS.DEFAULT_MODEL_PATH,
         confidence_threshold: TEMPORAL_CONSTANTS.DEMO_MODE_SETTINGS.confidence_threshold,
         collision_distance_threshold: TEMPORAL_CONSTANTS.DEMO_MODE_SETTINGS.collision_distance_threshold,
@@ -255,9 +280,35 @@ export function createStandardModeRequest(
     inputVideo: string,
     outputVideo?: string
 ): VideoProcessingRequest {
+    // Ensure input video path is absolute
+    const absoluteInputPath = path.resolve(inputVideo);
+    
+    // Generate a proper output filename if not provided, ensure it's absolute
+    const defaultOutput = outputVideo || (() => {
+        const inputPath = absoluteInputPath;
+        const lastDot = inputPath.lastIndexOf('.');
+        const lastSlash = Math.max(inputPath.lastIndexOf('/'), inputPath.lastIndexOf('\\'));
+
+        if (lastDot > lastSlash) {
+            // Has extension
+            const stem = inputPath.substring(lastSlash + 1, lastDot);
+            const ext = inputPath.substring(lastDot);
+            return `tracked_${stem}${ext}`;
+        } else {
+            // No extension
+            const stem = inputPath.substring(lastSlash + 1);
+            return `tracked_${stem}.mp4`;
+        }
+    })();
+
+    // Ensure output path is absolute - resolve relative to current working directory
+    const absoluteOutputPath = path.isAbsolute(defaultOutput) 
+        ? defaultOutput 
+        : path.resolve(process.cwd(), 'output', defaultOutput);
+
     return {
-        input_video: inputVideo,
-        output_video: outputVideo || `tracked_${inputVideo}`,
+        input_video: absoluteInputPath,
+        output_video: absoluteOutputPath,
         model_path: TEMPORAL_CONSTANTS.DEFAULT_MODEL_PATH,
         confidence_threshold: TEMPORAL_CONSTANTS.STANDARD_MODE_SETTINGS.confidence_threshold,
         collision_distance_threshold: TEMPORAL_CONSTANTS.STANDARD_MODE_SETTINGS.collision_distance_threshold,

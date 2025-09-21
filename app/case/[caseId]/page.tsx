@@ -1,15 +1,22 @@
 'use client';
 
 import React from 'react';
-import { useParams } from 'next/navigation';
-import { CaseFlow } from '@/components/case-flow';
+import { useParams, useRouter } from 'next/navigation';
 import { useCase } from '@/hooks/use-case';
 import { Spinner } from '@heroui/spinner';
 
 export default function CasePage() {
     const params = useParams();
+    const router = useRouter();
     const caseId = params.caseId as string;
     const { data: caseData, isLoading, error } = useCase(caseId);
+
+    // Always redirect to resolution page - it handles all loading states
+    React.useEffect(() => {
+        if (caseData) {
+            router.push(`/case/${caseId}/resolution`);
+        }
+    }, [caseData, caseId, router]);
 
     if (isLoading) {
         return (
@@ -53,5 +60,20 @@ export default function CasePage() {
         );
     }
 
-    return <CaseFlow case={caseData} />;
+    // This will only render briefly before the redirect
+    return (
+        <main className="min-h-screen bg-gray-50 flex flex-col items-center justify-center">
+            <div className="text-center space-y-6">
+                <Spinner size="lg" />
+                <div className="space-y-2">
+                    <h1 className="text-2xl font-light text-gray-900 serif-display">
+                        Redirecting...
+                    </h1>
+                    <p className="text-gray-600 serif-body">
+                        Taking you to the current step
+                    </p>
+                </div>
+            </div>
+        </main>
+    );
 }

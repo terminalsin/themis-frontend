@@ -1,17 +1,14 @@
-# Temporal Video Tracking Implementation (Python Worker Client)
+# Temporal Video Tracking Client (Python Worker)
 
-This directory contains a Temporal workflow implementation that delegates video tracking and collision detection to Python workers via Temporal.
+This directory contains a Temporal client that calls Python video tracking workflows directly via Temporal.
 
 ## 🏗️ Architecture
 
-The implementation follows Temporal best practices as a client that calls Python workers:
+The implementation is a simple client that calls Python workflows:
 
 ```
 temporal/
-├── workflows/           # Workflow definitions (delegates to Python)
-├── activities/          # Activity implementations (calls Python worker)
-├── client/             # Client for executing workflows
-├── worker/             # Worker configuration
+├── client/             # Client for executing Python workflows
 ├── cli/                # Command-line interface
 └── index.ts            # Main exports
 ```
@@ -32,14 +29,7 @@ temporal server start-dev
 
 Make sure your Python worker is running and registered with Temporal on the `vehicle-tracking` task queue.
 
-### 3. Start the TypeScript Worker
-
-```bash
-# In a separate terminal
-npm run temporal:worker
-```
-
-### 4. Run Video Tracking
+### 3. Run Video Tracking
 
 ```bash
 # Process a video with standard settings
@@ -52,44 +42,15 @@ npm run temporal:track -- --demo my-video.mp4
 npm run temporal:track -- --help
 ```
 
-### 5. Development Mode
-
-```bash
-# Run both worker and Next.js dev server
-npm run temporal:dev
-```
-
 ## 📋 Components
-
-### Workflows
-
-**`videoTrackingWorkflow`** - Main workflow that delegates to Python worker:
-- Calls Python worker via Temporal
-- Monitors execution status
-- Returns results from Python worker
-
-### Activities
-
-**`executeVideoTrackingActivity`** - Calls Python worker via Temporal:
-- Connects to Temporal server
-- Executes Python workflow
-- Returns processing results
 
 ### Client
 
-**`VideoTrackingClient`** - High-level client for workflow execution:
+**`VideoTrackingClient`** - High-level client for Python workflow execution:
 - Connection management
-- Workflow execution
+- Python workflow execution
 - Status monitoring
 - Error handling
-
-### Worker
-
-**`video-tracking-worker`** - Temporal worker configuration:
-- Activity registration
-- Timeout configuration
-- Retry policies
-- Graceful shutdown
 
 ## 🎯 Usage Examples
 
@@ -98,10 +59,10 @@ npm run temporal:dev
 ```typescript
 import { runVideoTrackingWorkflow, createStandardModeRequest } from './temporal';
 
-// Create request (matches Python worker interface)
+// Create request (matches Python workflow interface)
 const request = createStandardModeRequest('video.mp4');
 
-// Execute workflow (delegates to Python worker)
+// Execute Python workflow directly
 const result = await runVideoTrackingWorkflow(request);
 
 if (result.success) {
@@ -159,16 +120,12 @@ const request = createDemoModeRequest('video.mp4');
 // - Overlap threshold: 0.08
 ```
 
-### Worker Configuration
+### Client Configuration
 
 ```typescript
-// temporal/worker/video-tracking-worker.ts
-const worker = await createVideoTrackingWorker({
-  serverAddress: 'localhost:7233',
-  taskQueue: 'vehicle-tracking',
-  maxConcurrentActivityTaskExecutions: 5,
-  maxConcurrentWorkflowTaskExecutions: 10,
-});
+// temporal/client/video-tracking-client.ts
+const client = new VideoTrackingClient();
+await client.connect('localhost:7233');
 ```
 
 ## 🔧 CLI Options
@@ -187,7 +144,7 @@ Options:
 
 ## 📊 Processing Results
 
-The workflow returns comprehensive processing results from the Python worker:
+The Python workflow returns comprehensive processing results:
 
 ```typescript
 interface VideoProcessingResult {
@@ -237,18 +194,18 @@ Access the Temporal Web UI at `http://localhost:8233` to monitor:
 The implementation includes comprehensive error handling:
 
 - **Connection Errors**: Temporal server connection issues
-- **Python Worker Errors**: Python workflow execution failures
-- **Timeout Errors**: Activity and workflow timeouts
+- **Python Workflow Errors**: Python workflow execution failures
+- **Timeout Errors**: Workflow timeouts
 - **Retry Logic**: Automatic retries with exponential backoff
 
 ## 🔗 Integration Points
 
-### With Python Worker
+### With Python Workflow
 
-- Calls Python worker via Temporal `VideoTrackingWorkflow.run`
+- Calls Python workflow via Temporal `VideoTrackingWorkflow`
 - Uses `vehicle-tracking` task queue
 - Passes request parameters matching Python interface
-- Returns results in Python worker format
+- Returns results in Python workflow format
 
 ### With Existing API
 
@@ -263,17 +220,14 @@ The implementation includes comprehensive error handling:
 
 ## 📚 Dependencies
 
-- `@temporalio/workflow` - Workflow definitions
-- `@temporalio/activity` - Activity implementations
 - `@temporalio/client` - Client SDK
-- `@temporalio/worker` - Worker runtime
 
 ## 🎯 Prerequisites
 
 1. **Temporal Server**: Running on localhost:7233
 2. **Python Worker**: Running and registered with Temporal
 3. **Task Queue**: Python worker listening on `vehicle-tracking` queue
-4. **Python Workflow**: Implements `VideoTrackingWorkflow.run` method
+4. **Python Workflow**: Implements `VideoTrackingWorkflow` class with `run` method
 
 ## 📖 Resources
 
