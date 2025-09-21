@@ -1,7 +1,7 @@
 export type SiteConfig = typeof siteConfig;
 
 export const siteConfig = {
-  name: "Next.js + HeroUI",
+  name: "Themis.ai - AI Legal",
   description: "Make beautiful websites regardless of your design experience.",
   navItems: [
     {
