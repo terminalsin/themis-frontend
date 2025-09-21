@@ -12,6 +12,9 @@ export async function OPTIONS() {
 
 export async function GET(request: NextRequest) {
     try {
+        // Add artificial delay for testing/demo purposes
+        await new Promise(resolve => setTimeout(resolve, 2000));
+
         const caseDir = path.join(WORKSPACE_DIR, 'demo2');
         const caseFile = path.join(caseDir, 'case.json');
 

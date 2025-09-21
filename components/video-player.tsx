@@ -162,11 +162,11 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
     };
 
     return (
-        <div className={`flex gap-8 items-start h-[600px] overflow-hidden ${className}`}>
+        <div className={`flex gap-8 items-start h-[600px] ${className} bg-stone-50`}>
             {/* Video Section */}
-            <div className="flex-1 bg-stone-50 rounded-lg overflow-hidden shadow-lg border border-stone-200 flex flex-col">
+            <div className="flex-1 bg-stone-50 rounded-lg shadow-lg border border-stone-200 flex flex-col h-full">
                 {/* Video Element */}
-                <div className="relative bg-black flex-1 overflow-hidden">
+                <div className="relative bg-black overflow-hidden" style={{ height: 'calc(100% - 150px)' }}>
                     {isVideoLoading ? (
                         <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-stone-900 to-stone-800">
                             <div className="text-center space-y-8">
@@ -178,8 +178,6 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
                                     <div className="absolute -top-2 -right-2 w-6 h-6 bg-stone-600 rounded-full animate-bounce">
                                         <span className="text-xs">✨</span>
                                     </div>
-                                    {/* Rotating ring */}
-                                    <div className="absolute inset-0 border-2 border-stone-500 border-t-stone-300 rounded-full animate-spin"></div>
                                 </div>
 
                                 <div className="space-y-4">
@@ -229,7 +227,7 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
                 </div>
 
                 {/* Controls */}
-                <div className={`bg-stone-100 p-6 space-y-4 border-t border-stone-200 flex-shrink-0 ${isVideoLoading || !videoSrc ? 'opacity-50' : ''}`}>
+                <div className={`bg-stone-100 p-6 space-y-4 border-t border-stone-200 flex-shrink-0 ${isVideoLoading || !videoSrc ? 'opacity-50' : ''}`} style={{ height: '120px' }}>
                     {/* Progress Bar */}
                     <div className="space-y-3">
                         <Slider
@@ -295,7 +293,7 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
                     style={{ height: 'calc(100% - 120px)' }}
                 >
                     {isTimelineLoading ? (
-                        <div className="flex flex-col items-center justify-center h-full space-y-6">
+                        <div className="flex flex-col items-center justify-center h-full space-y-6 mt-12">
                             <div className="relative">
                                 <div className="w-16 h-16 bg-stone-200 rounded-full flex items-center justify-center animate-pulse">
                                     <span className="text-2xl">⚖️</span>
@@ -314,7 +312,7 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
 
                             {/* Loading skeleton items */}
                             <div className="w-full space-y-3 mt-8">
-                                {[1, 2, 3].map((i) => (
+                                {[1, 2].map((i) => (
                                     <div key={i} className="bg-stone-100 rounded-lg p-4 animate-pulse">
                                         <div className="h-3 bg-stone-200 rounded w-16 mb-2"></div>
                                         <div className="h-4 bg-stone-200 rounded w-full mb-1"></div>

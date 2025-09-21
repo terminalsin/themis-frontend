@@ -48,12 +48,12 @@ export default function RootLayout({
             </main>
             <footer className="w-full flex items-center justify-center py-8 paper-texture">
               <div className="text-center animate-in fade-in-50 slide-in-from-bottom-4 duration-1000 delay-300">
-                <div className="serif-display italic text-stone-600 text-sm tracking-wide mb-2 animate-in fade-in-0 blur-in duration-700 delay-500">
+                <div className="serif-display italic text-stone-200 text-sm tracking-wide mb-2 animate-in fade-in-0 blur-in duration-700 delay-500">
                   <span className="opacity-70">Crafted with</span>
-                  <span className="text-stone-800 mx-1 animate-pulse">♡</span>
+                  <span className="text-stone-100 mx-1 animate-pulse">♡</span>
                   <span className="opacity-70">& passion</span>
                 </div>
-                <div className="serif-body italic text-xs text-stone-500 tracking-wider animate-in fade-in-0 blur-in duration-700 delay-700">
+                <div className="serif-body italic text-xs text-stone-300 tracking-wider animate-in fade-in-0 blur-in duration-700 delay-700">
                   <span className="opacity-60">powered by</span>
                   <span className="mx-2 opacity-40">·</span>
                   <Link

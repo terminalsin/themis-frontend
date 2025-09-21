@@ -37,7 +37,7 @@ export default function Home() {
       router.push('/case/demo1');
       return;
     }
-    
+
     if (selectedFile.name === 'demo2.MOV') {
       console.log('Demo2 video detected, redirecting to demo2 case');
       router.push('/case/demo2');

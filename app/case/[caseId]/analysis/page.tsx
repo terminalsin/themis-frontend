@@ -3,9 +3,12 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { useCase } from '@/hooks/use-case';
-import { Spinner } from '@heroui/spinner';
 import { Card, CardBody } from '@heroui/card';
 import { Progress } from '@heroui/progress';
+import { Spinner } from '@heroui/spinner';
+import { CaseHeader } from '@/components/case-header';
+import { CaseLoading } from '@/components/case-loading';
+import { CaseError } from '@/components/case-error';
 
 export default function AnalysisPage() {
     const params = useParams();
@@ -51,127 +54,95 @@ export default function AnalysisPage() {
     }, [tasks.length]);
 
     if (isLoading) {
-        return (
-            <main className="min-h-screen bg-gray-50 flex flex-col items-center justify-center">
-                <div className="text-center space-y-6">
-                    <Spinner size="lg" />
-                    <div className="space-y-2">
-                        <h1 className="text-2xl font-light text-gray-900 serif-display">
-                            Loading Case
-                        </h1>
-                        <p className="text-gray-600 serif-body">
-                            Retrieving your case details...
-                        </p>
-                    </div>
-                </div>
-            </main>
-        );
+        return <CaseLoading />;
     }
 
     if (error || !caseData) {
-        return (
-            <main className="min-h-screen bg-gray-50 flex flex-col items-center justify-center">
-                <div className="text-center space-y-6 max-w-md">
-                    <div className="text-6xl">😔</div>
-                    <div className="space-y-4">
-                        <h1 className="text-3xl font-light text-gray-900 serif-display">
-                            Case Not Found
-                        </h1>
-                        <p className="text-gray-600 serif-body leading-relaxed">
-                            We couldn't find the case you're looking for. It may have been deleted or the link may be incorrect.
-                        </p>
-                    </div>
-                    <a
-                        href="/"
-                        className="inline-block px-6 py-3 bg-gray-900 text-white serif-body font-medium rounded-lg hover:bg-gray-800 transition-colors duration-200"
-                    >
-                        Start New Case
-                    </a>
-                </div>
-            </main>
-        );
+        return <CaseError />;
     }
 
     return (
-        <main className="min-h-screen bg-gray-50 flex flex-col items-center justify-center px-6 py-12">
-            <Card className="elegant-card w-full max-w-2xl">
-                <CardBody className="text-center py-16 px-8 space-y-10">
-                    {/* AI Brain Animation */}
-                    <div className="flex justify-center">
-                        <div className="relative">
-                            <div className="w-20 h-20 bg-gray-900 rounded-full flex items-center justify-center animate-pulse">
-                                <span className="text-2xl">🧠</span>
+        <div className="px-6 py-8">
+            <div className="w-full max-w-2xl mx-auto">
+                <Card className="elegant-card">
+                    <CardBody className="text-center py-16 px-8 space-y-10">
+                        {/* AI Brain Animation */}
+                        <div className="flex justify-center">
+                            <div className="relative">
+                                <div className="w-20 h-20 bg-stone-900 rounded-full flex items-center justify-center animate-pulse">
+                                    <span className="text-2xl">🧠</span>
+                                </div>
+                                <div className="absolute -top-2 -right-2 w-6 h-6 bg-stone-600 rounded-full animate-bounce">
+                                    <span className="text-xs">✨</span>
+                                </div>
                             </div>
-                            <div className="absolute -top-2 -right-2 w-6 h-6 bg-gray-600 rounded-full animate-bounce">
-                                <span className="text-xs">✨</span>
+                        </div>
+
+                        {/* Title and Description */}
+                        <div className="space-y-6">
+                            <h2 className="text-3xl serif-display text-stone-900 italic">
+                                AI Analysis in Progress
+                            </h2>
+                            <p className="serif-body text-lg text-stone-600 max-w-md mx-auto italic">
+                                Our advanced AI is analyzing your video frame by frame to understand exactly what happened.
+                            </p>
+                        </div>
+
+                        {/* Progress Bar */}
+                        <div className="space-y-4">
+                            <Progress
+                                value={progress}
+                                className="max-w-md mx-auto"
+                                color="secondary"
+                                size="lg"
+                            />
+                            <div className="text-sm text-gray-500">
+                                {progress}% Complete
                             </div>
                         </div>
-                    </div>
 
-                    {/* Title and Description */}
-                    <div className="space-y-6">
-                        <h2 className="text-3xl serif-heading text-gray-900">
-                            AI Analysis in Progress
-                        </h2>
-                        <p className="serif-body text-lg text-gray-600 max-w-md mx-auto">
-                            Our advanced AI is analyzing your video frame by frame to understand exactly what happened.
-                        </p>
-                    </div>
+                        {/* Current Task */}
+                        <div className="bg-gradient-to-r from-purple-50 to-blue-50 rounded-lg p-6 max-w-md mx-auto">
+                            <div className="flex items-center justify-center space-x-3 mb-4">
+                                <span className="text-2xl animate-bounce">
+                                    {tasks[currentTask]?.icon}
+                                </span>
+                                <Spinner size="sm" />
+                            </div>
+                            <div className="text-sm font-medium text-gray-800">
+                                {tasks[currentTask]?.name}
+                            </div>
+                        </div>
 
-                    {/* Progress Bar */}
-                    <div className="space-y-4">
-                        <Progress
-                            value={progress}
-                            className="max-w-md mx-auto"
-                            color="secondary"
-                            size="lg"
-                        />
-                        <div className="text-sm text-gray-500">
-                            {progress}% Complete
+                        {/* Analysis Features */}
+                        <div className="grid grid-cols-2 gap-4 max-w-lg mx-auto">
+                            <div className="bg-white border border-gray-200 rounded-lg p-4 text-center">
+                                <div className="text-2xl mb-2">🎯</div>
+                                <div className="text-xs font-medium text-gray-700">Object Detection</div>
+                            </div>
+                            <div className="bg-white border border-gray-200 rounded-lg p-4 text-center">
+                                <div className="text-2xl mb-2">📐</div>
+                                <div className="text-xs font-medium text-gray-700">Trajectory Analysis</div>
+                            </div>
+                            <div className="bg-white border border-gray-200 rounded-lg p-4 text-center">
+                                <div className="text-2xl mb-2">⏱️</div>
+                                <div className="text-xs font-medium text-gray-700">Timing Analysis</div>
+                            </div>
+                            <div className="bg-white border border-gray-200 rounded-lg p-4 text-center">
+                                <div className="text-2xl mb-2">⚖️</div>
+                                <div className="text-xs font-medium text-gray-700">Fault Assessment</div>
+                            </div>
                         </div>
-                    </div>
 
-                    {/* Current Task */}
-                    <div className="bg-gradient-to-r from-purple-50 to-blue-50 rounded-lg p-6 max-w-md mx-auto">
-                        <div className="flex items-center justify-center space-x-3 mb-4">
-                            <span className="text-2xl animate-bounce">
-                                {tasks[currentTask]?.icon}
-                            </span>
-                            <Spinner size="sm" />
+                        {/* Technical Info */}
+                        <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 max-w-md mx-auto">
+                            <div className="text-xs text-gray-600">
+                                <span className="font-semibold">🔬 Technical:</span> Using computer vision and machine learning to analyze vehicle dynamics, collision physics, and traffic law compliance.
+                            </div>
                         </div>
-                        <div className="text-sm font-medium text-gray-800">
-                            {tasks[currentTask]?.name}
-                        </div>
-                    </div>
-
-                    {/* Analysis Features */}
-                    <div className="grid grid-cols-2 gap-4 max-w-lg mx-auto">
-                        <div className="bg-white border border-gray-200 rounded-lg p-4 text-center">
-                            <div className="text-2xl mb-2">🎯</div>
-                            <div className="text-xs font-medium text-gray-700">Object Detection</div>
-                        </div>
-                        <div className="bg-white border border-gray-200 rounded-lg p-4 text-center">
-                            <div className="text-2xl mb-2">📐</div>
-                            <div className="text-xs font-medium text-gray-700">Trajectory Analysis</div>
-                        </div>
-                        <div className="bg-white border border-gray-200 rounded-lg p-4 text-center">
-                            <div className="text-2xl mb-2">⏱️</div>
-                            <div className="text-xs font-medium text-gray-700">Timing Analysis</div>
-                        </div>
-                        <div className="bg-white border border-gray-200 rounded-lg p-4 text-center">
-                            <div className="text-2xl mb-2">⚖️</div>
-                            <div className="text-xs font-medium text-gray-700">Fault Assessment</div>
-                        </div>
-                    </div>
-
-                    {/* Technical Info */}
-                    <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 max-w-md mx-auto">
-                        <div className="text-xs text-gray-600">
-                            <span className="font-semibold">🔬 Technical:</span> Using computer vision and machine learning to analyze vehicle dynamics, collision physics, and traffic law compliance.
-                        </div>
-                    </div>
-                </CardBody>
-            </Card>
-        </main>
+                    </CardBody>
+                </Card>
+            </div>
+        </div>
     );
 }

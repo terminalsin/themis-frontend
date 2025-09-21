@@ -4,8 +4,8 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { useCase } from '@/hooks/use-case';
 import { Button } from '@heroui/button';
-import { Spinner } from '@heroui/spinner';
-import { Logo } from '@/components/logo';
+import { CaseHeader } from '@/components/case-header';
+import { CaseLoading } from '@/components/case-loading';
 
 interface MemeData {
     filename: string;
@@ -75,35 +75,17 @@ export default function SobsPage() {
 
     if (isLoading) {
         return (
-            <div className="min-h-screen bg-gradient-to-br from-stone-50 to-stone-100">
-                <div className="container mx-auto px-4 py-8">
-                    <div className="flex items-center justify-between mb-8">
-                        <Logo />
-                        <Button
-                            variant="ghost"
-                            onClick={handleBackToCase}
-                            className="text-stone-600 hover:text-stone-900"
-                        >
-                            ← Back to Case
-                        </Button>
-                    </div>
-
-                    <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-6">
-                        <div className="relative">
-                            <div className="w-20 h-20 bg-stone-200 rounded-full flex items-center justify-center animate-pulse">
-                                <span className="text-3xl">😭</span>
-                            </div>
-                            <div className="absolute inset-0 border-2 border-stone-300 border-t-stone-600 rounded-full animate-spin"></div>
-                        </div>
-                        <div className="text-center space-y-2">
-                            <h2 className="serif-display text-2xl font-medium text-stone-900">
-                                Loading Your Sobs...
-                            </h2>
-                            <p className="serif-body text-stone-600">
-                                Preparing the perfect meme for your situation
-                            </p>
-                        </div>
-                    </div>
+            <div className="px-4 py-8">
+                <div className="container mx-auto">
+                    <CaseHeader
+                        showBackButton={true}
+                        backUrl={`/case/${caseId}/resolution`}
+                    />
+                    <CaseLoading
+                        title="Loading Your Sobs..."
+                        subtitle="Preparing the perfect meme for your situation"
+                        icon="😭"
+                    />
                 </div>
             </div>
         );
@@ -111,31 +93,24 @@ export default function SobsPage() {
 
     if (error) {
         return (
-            <div className="min-h-screen bg-gradient-to-br from-stone-50 to-stone-100">
-                <div className="container mx-auto px-4 py-8">
-                    <div className="flex items-center justify-between mb-8">
-                        <Logo />
-                        <Button
-                            variant="ghost"
-                            onClick={handleBackToCase}
-                            className="text-stone-600 hover:text-stone-900"
-                        >
-                            ← Back to Case
-                        </Button>
-                    </div>
-
+            <div className="px-4 py-8">
+                <div className="container mx-auto">
+                    <CaseHeader
+                        showBackButton={true}
+                        backUrl={`/case/${caseId}/resolution`}
+                    />
                     <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-6">
                         <div className="text-center space-y-4">
                             <div className="text-6xl">😞</div>
-                            <h2 className="serif-display text-2xl font-medium text-stone-900">
+                            <h2 className="serif-display text-2xl font-medium text-stone-900 italic">
                                 No Sobs Available
                             </h2>
-                            <p className="serif-body text-stone-600 max-w-md">
+                            <p className="serif-body text-stone-600 max-w-md italic">
                                 {error}
                             </p>
                             <Button
                                 onClick={fetchRandomMeme}
-                                className="bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 text-white"
+                                className="bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 text-white serif-body"
                             >
                                 Try Again
                             </Button>
@@ -147,29 +122,23 @@ export default function SobsPage() {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-stone-50 to-stone-100">
-            <div className="container mx-auto px-4 py-8">
+        <div className="px-4 py-8">
+            <div className="container mx-auto">
                 {/* Header */}
-                <div className="flex items-center justify-between mb-8">
-                    <Logo />
-                    <Button
-                        variant="ghost"
-                        onClick={handleBackToCase}
-                        className="text-stone-600 hover:text-stone-900"
-                    >
-                        ← Back to Case
-                    </Button>
-                </div>
+                <CaseHeader
+                    showBackButton={true}
+                    backUrl={`/case/${caseId}/resolution`}
+                />
 
                 {/* Main Content */}
                 <div className="max-w-4xl mx-auto">
                     {/* Title Section */}
                     <div className="text-center mb-12 space-y-4">
                         <div className="text-6xl mb-4">😭</div>
-                        <h1 className="serif-display text-4xl font-bold text-stone-900">
+                        <h1 className="serif-display text-4xl font-bold text-stone-900 italic">
                             Your Sobs
                         </h1>
-                        <p className="serif-body text-xl text-stone-600 max-w-2xl mx-auto">
+                        <p className="serif-body text-xl text-stone-600 max-w-2xl mx-auto italic">
                             Sometimes life gives you lemons, sometimes it gives you a car accident.
                             Here's a meme to help you cope with the situation.
                         </p>

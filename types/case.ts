@@ -43,6 +43,10 @@ export const CaseSchema = z.object({
     meme_path: z.string().optional(),
     processing_completed_at: z.date().optional(),
     processing_error: z.string().optional(),
+    demo_spinner_delay: z.number().optional(), // Demo spinner delay in seconds (deprecated)
+    demo_video_delay: z.number().optional(), // Demo video loading delay in seconds
+    demo_timeline_delay: z.number().optional(), // Demo timeline loading delay in seconds
+    demo_analysis_delay: z.number().optional(), // Demo analysis loading delay in seconds
     created_at: z.date(),
     updated_at: z.date(),
 });

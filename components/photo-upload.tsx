@@ -51,7 +51,7 @@ export const PhotoUpload: React.FC<PhotoUploadProps> = ({
                             alt="Preview"
                             className="w-full h-full object-cover rounded-lg"
                         />
-                        <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 flex items-center justify-center">
+                        <div className="absolute inset-0 hover:bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 flex items-center justify-center">
                             <div className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm font-medium">
                                 Click to change
                             </div>

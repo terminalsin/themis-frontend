@@ -7,7 +7,7 @@ export async function GET(
     { params }: { params: { caseId: string; filename: string } }
 ) {
     try {
-        const { caseId, filename } = params;
+        const { caseId, filename } = await params;
         const workspacePath = path.join(process.cwd(), 'workspace', caseId);
         const filePath = path.join(workspacePath, 'docs', filename);
 
